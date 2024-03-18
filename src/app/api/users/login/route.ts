@@ -1,8 +1,8 @@
 import { AppError } from '@/server/handlers/AppError'
-import { db } from '../../../../../db/providers/drizzle'
-import { userToken, users } from '../../../../../db/schema'
+import { db } from '../../../../server/db/providers/drizzle'
+import { userToken, users } from '../../../../server/db/schema'
 
-import { hashProvider } from '../../../../../db/providers/HashProvider/HashProvider'
+import { hashProvider } from '../../../../server/db/providers/HashProvider/HashProvider'
 import { sign } from 'jsonwebtoken'
 import authConfig from '@/server/authConfig'
 import { NextResponse } from 'next/server'
@@ -12,11 +12,7 @@ import { eq } from 'drizzle-orm'
 export async function POST(request: Request) {
   const { email, password } = await request.json()
 
-  console.group('bateu')
-
   const user = await db.select().from(users).where(eq(users.email, email))
-
-  console.log('user', user)
 
   if (user.length < 1) {
     return AppError({
@@ -29,8 +25,6 @@ export async function POST(request: Request) {
     password,
     user[0].password,
   )
-
-  console.log('passwordMatched', passwordMatched)
 
   if (!passwordMatched) {
     return AppError({

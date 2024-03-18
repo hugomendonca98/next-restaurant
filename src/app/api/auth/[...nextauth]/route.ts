@@ -1,3 +1,4 @@
+import axios from 'axios'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
@@ -19,12 +20,14 @@ export const authOptions: NextAuthOptions = {
       if (account && account.type === 'credentials') {
         token.userId = account.providerAccountId
         token.username = user.username
+        token.accessToken = user.token
       }
       return token
     },
     async session({ session, token }) {
       session.user.id = token.userId
       session.user.username = token.username
+      session.user.token = token.accessToken
 
       return session
     },
@@ -63,6 +66,8 @@ export const authOptions: NextAuthOptions = {
         }
 
         const { user, token } = await authResponse.json()
+
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`
 
         return {
           ...user,

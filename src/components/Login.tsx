@@ -4,7 +4,7 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-export default function Teste() {
+export default function Login() {
   const router = useRouter()
   const handleSign = async () => {
     const data = await signIn('credentials-login', {

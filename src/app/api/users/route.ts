@@ -1,9 +1,10 @@
-import { db } from '../../../../db/providers/drizzle'
-import { users } from '../../../../db/schema'
+import { db } from '../../../server/db/providers/drizzle'
+import { users } from '../../../server/db/schema'
 
 import { count, eq } from 'drizzle-orm'
 import { AppError } from '@/server/handlers/AppError'
-import { hashProvider } from '../../../../db/providers/HashProvider/HashProvider'
+import { hashProvider } from '../../../server/db/providers/HashProvider/HashProvider'
+import { ensureAuthenticated } from '@/server/handlers/ensureAuthenticated'
 
 export async function POST(request: Request) {
   const res = await request.json()
@@ -52,6 +53,17 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
+  const auth = await ensureAuthenticated(request)
+
+  console.log('auth', auth)
+
+  if (auth?.error) {
+    return AppError({
+      message: auth.error,
+      status: auth.status,
+    })
+  }
+
   const { searchParams } = new URL(request.url)
 
   const page = Number(searchParams.get('page')) || 1
@@ -67,6 +79,7 @@ export async function GET(request: Request) {
     .orderBy(users.id)
     .limit(limit)
     .offset((page - 1) * limit)
+
   return Response.json({
     data,
     meta: {
