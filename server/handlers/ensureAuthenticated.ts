@@ -15,7 +15,7 @@ export const ensureAuthenticated = async (request: Request) => {
 
   if (!authHeader) {
     return {
-      error: 'No token provided.',
+      error: 'Invalid token.',
       status: 401,
     }
   }

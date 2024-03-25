@@ -1,10 +1,10 @@
-import { AppError } from '@/server/handlers/AppError'
-import { db } from '../../../../server/db/providers/drizzle'
-import { userToken, users } from '../../../../server/db/schema'
+import { AppError } from '@/../server/handlers/AppError'
+import { db } from '@/lib/db/providers/drizzle'
+import { users } from '@/lib/db/schema'
 
-import { hashProvider } from '../../../../server/db/providers/HashProvider/HashProvider'
+import { hashProvider } from '@/lib/db/providers/HashProvider/HashProvider'
 import { sign } from 'jsonwebtoken'
-import authConfig from '@/server/authConfig'
+import authConfig from '@/../server/authConfig'
 import { NextResponse } from 'next/server'
 
 import { eq } from 'drizzle-orm'
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
   if (user.length < 1) {
     return AppError({
-      message: 'User not found.',
+      message: 'Usuário não encontrado.',
       status: 401,
     })
   }
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
   if (!passwordMatched) {
     return AppError({
-      message: 'Invalid credentials.',
+      message: 'Usuário ou senha inválidos.',
       status: 401,
     })
   }
@@ -37,11 +37,11 @@ export async function POST(request: Request) {
 
   const token = sign({ id: user[0].id }, secret, { expiresIn: expireIn })
 
-  await db.insert(userToken).values({
-    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toDateString(),
-    token,
-    userId: user[0].id,
-  })
+  // await db.insert(userToken).values({
+  //   expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toDateString(),
+  //   token,
+  //   userId: user[0].id,
+  // })
 
   return NextResponse.json({
     user: { email: user[0].email, id: user[0].id, username: user[0].username },

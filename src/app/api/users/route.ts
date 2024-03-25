@@ -1,10 +1,10 @@
-import { db } from '../../../server/db/providers/drizzle'
-import { users } from '../../../server/db/schema'
+import { db } from '../../../lib/db/providers/drizzle'
+import { users } from '../../../lib/db/schema'
 
 import { count, eq } from 'drizzle-orm'
-import { AppError } from '@/server/handlers/AppError'
-import { hashProvider } from '../../../server/db/providers/HashProvider/HashProvider'
-import { ensureAuthenticated } from '@/server/handlers/ensureAuthenticated'
+import { AppError } from '../../../../server/handlers/AppError'
+import { hashProvider } from '../../../lib/db/providers/HashProvider/HashProvider'
+import { ensureAuthenticated } from '../../../../server/handlers/ensureAuthenticated'
 
 export async function POST(request: Request) {
   const res = await request.json()
@@ -54,8 +54,6 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   const auth = await ensureAuthenticated(request)
-
-  console.log('auth', auth)
 
   if (auth?.error) {
     return AppError({

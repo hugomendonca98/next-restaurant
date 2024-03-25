@@ -22,6 +22,7 @@ export const authOptions: NextAuthOptions = {
         token.username = user.username
         token.accessToken = user.token
       }
+
       return token
     },
     async session({ session, token }) {
@@ -43,6 +44,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         console.log('credentials', credentials)
+
         const authResponse = await fetch(
           'http://localhost:3000/api/users/login',
           {
@@ -55,6 +57,7 @@ export const authOptions: NextAuthOptions = {
         )
 
         if (!authResponse.ok) {
+          console.log('authResponse', authResponse)
           throw new Error(
             JSON.stringify({
               errors: await authResponse
@@ -68,6 +71,10 @@ export const authOptions: NextAuthOptions = {
         const { user, token } = await authResponse.json()
 
         axios.defaults.headers.common.Authorization = `Bearer ${token}`
+        // api.then(
+        //   (axios) =>
+        //     (axios.defaults.headers.common.Authorization = `Bearer ${token}`),
+        // )
 
         return {
           ...user,
