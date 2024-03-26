@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 
 export async function UserInfos() {
   const { data: session } = useSession()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState(() => session?.user)
   return (
     <div>

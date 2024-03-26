@@ -1,6 +1,6 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { setupAPIClient } from '@/services/api'
 import { getServerSession } from 'next-auth/next'
+import { authOptions } from './nextAuthConfig'
 
 // Usado para fazer req server side.
 export async function apiServer() {

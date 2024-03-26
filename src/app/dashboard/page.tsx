@@ -1,11 +1,12 @@
 import { getServerSession } from 'next-auth/next'
 import React from 'react'
-import { authOptions } from '../api/auth/[...nextauth]/route'
+
 import { redirect } from 'next/navigation'
 
 import { apiServer } from '@/services/apiServer'
 import { apiErrors } from '@/services/handlers/apiErrors'
 import { Orders } from '@/components/orders'
+import { authOptions } from '@/services/nextAuthConfig'
 
 export default async function Page() {
   const session = await getServerSession(authOptions)
@@ -14,7 +15,7 @@ export default async function Page() {
     return redirect('/')
   }
 
-  const response = await getUsers()
+  await getUsers()
 
   return (
     <div>
