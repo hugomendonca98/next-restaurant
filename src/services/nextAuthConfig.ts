@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
         console.log('credentials', credentials)
 
         const authResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_API}api/users/login`,
+          `${process.env.NEXT_PUBLIC_API}/api/users/login`,
           {
             method: 'POST',
             headers: {
