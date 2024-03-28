@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     CredentialsProvider({
-      id: 'credentials-login',
+      id: 'login',
       name: 'login',
       type: 'credentials',
       credentials: {
