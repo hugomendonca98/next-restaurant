@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios from 'axios'
 import { NextAuthOptions } from 'next-auth'
@@ -45,8 +46,8 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         console.log('credentials', credentials)
 
-        const authResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_API}/api/users/login`,
+        const { data } = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/users/login`,
           {
             method: 'POST',
             headers: {
@@ -56,19 +57,17 @@ export const authOptions: NextAuthOptions = {
           },
         )
 
-        if (!authResponse.ok) {
-          console.log('authResponse', authResponse)
+        if (!data?.ok) {
+          console.log('authResponse', data)
           throw new Error(
             JSON.stringify({
-              errors: await authResponse
-                .json()
-                .then((data) => data.error.message),
+              errors: await data.json().then((res: any) => res.error.message),
               status: 401,
             }),
           )
         }
 
-        const { user, token } = await authResponse.json()
+        const { user, token } = await data.json()
 
         axios.defaults.headers.common.Authorization = `Bearer ${token}`
         // api.then(
