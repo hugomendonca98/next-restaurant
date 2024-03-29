@@ -36,8 +36,8 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     CredentialsProvider({
-      id: 'login',
-      name: 'login',
+      id: 'credentials',
+      name: 'credentials',
       type: 'credentials',
       credentials: {
         email: { label: 'Email' },
@@ -46,14 +46,23 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         console.log('credentials', credentials)
 
+        // const { data } = await axios.post(
+        //   `${process.env.NEXT_PUBLIC_API}/users/login`,
+        //   {
+        //     method: 'POST',
+
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(credentials),
+        //   },
+        // )
+
         const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_API}/users/login`,
           {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(credentials),
+            email: credentials?.email,
+            password: credentials?.password,
           },
         )
 

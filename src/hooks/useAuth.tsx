@@ -26,10 +26,11 @@ export function useAuth() {
   const handleSign = async ({ email, password }: IHandleLogin) => {
     setLoading(true)
 
-    const data = await signIn('login', {
+    const data = await signIn('credentials', {
       email,
       password,
       redirect: false,
+      callbackUrl: '/',
     })
 
     console.log('aquiiii', data)
