@@ -46,47 +46,31 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         console.log('credentials', credentials)
 
-        // const { data } = await axios.post(
-        //   `${process.env.NEXT_PUBLIC_API}/users/login`,
-        //   {
-        //     method: 'POST',
+        try {
+          const response = await axios.post(
+            `${process.env.NEXT_PUBLIC_API}/users/login`,
+            {
+              email: credentials?.email,
+              password: credentials?.password,
+            },
+          )
 
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(credentials),
-        //   },
-        // )
+          const { user, token } = await response?.data
 
-        const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_API}/users/login`,
-          {
-            email: credentials?.email,
-            password: credentials?.password,
-          },
-        )
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`
 
-        // if (!data?.ok) {
-        //   console.log('authResponse', data)
-        //   throw new Error(
-        //     JSON.stringify({
-        //       errors: await data.json().then((res: any) => res.error.message),
-        //       status: 401,
-        //     }),
-        //   )
-        // }
-
-        const { user, token } = await data
-
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`
-        // api.then(
-        //   (axios) =>
-        //     (axios.defaults.headers.common.Authorization = `Bearer ${token}`),
-        // )
-
-        return {
-          ...user,
-          token,
+          return {
+            ...user,
+            token,
+          }
+        } catch (error: any) {
+          console.log('error', error?.response?.data?.error?.message)
+          throw new Error(
+            JSON.stringify({
+              errors: error?.response?.data?.error?.message,
+              status: error?.response?.status,
+            }),
+          )
         }
       },
     }),

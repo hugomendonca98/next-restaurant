@@ -30,10 +30,8 @@ export function useAuth() {
       email,
       password,
       redirect: false,
-      callbackUrl: '/',
+      callbackUrl: '/dashboard',
     })
-
-    console.log('aquiiii', data)
 
     setLoading(false)
 
