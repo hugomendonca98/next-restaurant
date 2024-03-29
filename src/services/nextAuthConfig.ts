@@ -66,17 +66,17 @@ export const authOptions: NextAuthOptions = {
           },
         )
 
-        if (!data?.ok) {
-          console.log('authResponse', data)
-          throw new Error(
-            JSON.stringify({
-              errors: await data.json().then((res: any) => res.error.message),
-              status: 401,
-            }),
-          )
-        }
+        // if (!data?.ok) {
+        //   console.log('authResponse', data)
+        //   throw new Error(
+        //     JSON.stringify({
+        //       errors: await data.json().then((res: any) => res.error.message),
+        //       status: 401,
+        //     }),
+        //   )
+        // }
 
-        const { user, token } = await data.json()
+        const { user, token } = await data
 
         axios.defaults.headers.common.Authorization = `Bearer ${token}`
         // api.then(
