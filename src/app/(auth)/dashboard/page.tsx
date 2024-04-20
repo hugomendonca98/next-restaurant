@@ -5,8 +5,9 @@ import { redirect } from 'next/navigation'
 
 import { apiServer } from '@/services/apiServer'
 import { apiErrors } from '@/services/handlers/apiErrors'
-import { Orders } from '@/components/orders'
+
 import { authOptions } from '@/services/nextAuthConfig'
+import { DashboardPage } from '@/components/dashboardPage'
 
 export default async function Page() {
   const session = await getServerSession(authOptions)
@@ -19,7 +20,7 @@ export default async function Page() {
 
   return (
     <div>
-      <Orders />
+      <DashboardPage />
     </div>
   )
 }
