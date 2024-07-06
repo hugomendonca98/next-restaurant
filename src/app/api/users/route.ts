@@ -63,32 +63,22 @@ export async function GET(request: Request) {
     })
   }
 
-  const { page, total, limit, hasNextPage, hasPreviousPage } =
-    await paginateColumn({
-      request,
-      table: users,
-    })
+  const { offset, limit, meta } = await paginateColumn({
+    request,
+    table: users,
+  })
 
-  const data = await db
-    .select({
-      id: users.id,
-      username: users.username,
-      email: users.email,
-      created_at: users.createdAt,
-      updated_at: users.updatedAt,
-    })
-    .from(users)
-    .orderBy(users.id)
-    .limit(limit)
-    .offset((page - 1) * limit)
+  const data = await db.query.users.findMany({
+    offset,
+    limit,
+    orderBy: users.createdAt,
+    columns: {
+      password: false,
+    },
+  })
 
   return Response.json({
     data,
-    meta: {
-      total,
-      page,
-      next_page: hasNextPage ? page + 1 : null,
-      previous_page: hasPreviousPage ? page - 1 : null,
-    },
+    meta,
   })
 }

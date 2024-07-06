@@ -15,11 +15,14 @@ interface PaginateProps {
  * @param {PaginateProps} request - The request object containing the URL.
  * @param {PgTable} table - The table to retrieve pagination information from.
  * @return {Promise<{
- *   page: number,
  *   limit: number,
- *   total: number,
- *   hasNextPage: boolean,
- *   hasPreviousPage: boolean
+ *   offset: number
+ *   meta: {
+ *     total: number,
+ *     page: number,
+ *     nextPage: number | null,
+ *     previousPage: number | null
+ *   }
  * }>} The pagination information.
  */
 export async function paginateColumn({ request, table }: PaginateProps) {
@@ -33,10 +36,13 @@ export async function paginateColumn({ request, table }: PaginateProps) {
   const hasPreviousPage = page > 1
 
   return {
-    page,
     limit,
-    total: total[0].value,
-    hasNextPage,
-    hasPreviousPage,
+    offset: (page - 1) * limit,
+    meta: {
+      total: total[0].value,
+      page,
+      nextPage: hasNextPage ? page + 1 : null,
+      previousPage: hasPreviousPage ? page - 1 : null,
+    },
   }
 }
