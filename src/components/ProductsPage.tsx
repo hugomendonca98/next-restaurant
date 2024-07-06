@@ -4,6 +4,8 @@
  */
 import Link from 'next/link'
 
+import Image from 'next/image'
+
 import {
   Dialog,
   DialogContent,
@@ -66,6 +68,7 @@ import {
   ShoppingCartIcon,
   Users2Icon,
 } from './icons/icons'
+import { ImageUpIcon } from 'lucide-react'
 
 export function ProductsPage() {
   return (
@@ -191,12 +194,12 @@ export function ProductsPage() {
                   <DialogTrigger asChild>
                     <Button className="h-8 gap-1" size="sm">
                       <PlusCircleIcon className="h-3.5 w-3.5" />
-                      Add Produto
+                      Adicionar Produto
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                      <DialogTitle>Add Produto</DialogTitle>
+                      <DialogTitle>Adicionar Produto</DialogTitle>
                       {/* <DialogDescription>
                         Make changes to your profile here. Click save when
                         you're done.
@@ -215,9 +218,36 @@ export function ProductsPage() {
                         </Label>
                         <Input id="username" className="col-span-3" />
                       </div>
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="username" className="text-right">
+                          Preço
+                        </Label>
+                        <Input id="username" className="col-span-3" />
+                      </div>
+
+                      <div className="flex flex-col gap-4 w-full ">
+                        {/* <Label htmlFor="file" className="text-right">
+                          Imagem
+                        </Label> */}
+                        <label
+                          htmlFor="file"
+                          className="flex gap-4 w-full cursor-pointer"
+                        >
+                          {/* <span>Imagem</span> */}
+                          <div className="w-full h-20 bg-slate-900 px-4 flex justify-center items-center rounded">
+                            <ImageUpIcon />
+                          </div>
+                        </label>
+                        {/* <Input
+                          type="file"
+                          id="file"
+                          className="col-span-3 hidden"
+                          hidden
+                        /> */}
+                      </div>
                     </div>
                     <DialogFooter>
-                      <Button type="submit">Save changes</Button>
+                      <Button type="submit">Criar produto</Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
@@ -257,7 +287,7 @@ export function ProductsPage() {
                     <TableBody>
                       <TableRow>
                         <TableCell className="hidden sm:table-cell">
-                          <img
+                          <Image
                             alt="Product image"
                             className="aspect-square rounded-md object-cover"
                             height="64"
@@ -304,7 +334,7 @@ export function ProductsPage() {
                       </TableRow>
                       <TableRow>
                         <TableCell className="hidden sm:table-cell">
-                          <img
+                          <Image
                             alt="Product image"
                             className="aspect-square rounded-md object-cover"
                             height="64"
@@ -351,7 +381,7 @@ export function ProductsPage() {
                       </TableRow>
                       <TableRow>
                         <TableCell className="hidden sm:table-cell">
-                          <img
+                          <Image
                             alt="Product image"
                             className="aspect-square rounded-md object-cover"
                             height="64"
@@ -398,7 +428,7 @@ export function ProductsPage() {
                       </TableRow>
                       <TableRow>
                         <TableCell className="hidden sm:table-cell">
-                          <img
+                          <Image
                             alt="Product image"
                             className="aspect-square rounded-md object-cover"
                             height="64"
@@ -443,7 +473,7 @@ export function ProductsPage() {
                       </TableRow>
                       <TableRow>
                         <TableCell className="hidden sm:table-cell">
-                          <img
+                          <Image
                             alt="Product image"
                             className="aspect-square rounded-md object-cover"
                             height="64"
@@ -490,7 +520,7 @@ export function ProductsPage() {
                       </TableRow>
                       <TableRow>
                         <TableCell className="hidden sm:table-cell">
-                          <img
+                          <Image
                             alt="Product image"
                             className="aspect-square rounded-md object-cover"
                             height="64"

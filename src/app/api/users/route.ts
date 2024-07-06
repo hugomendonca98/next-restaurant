@@ -1,10 +1,11 @@
 import { db } from '../../../lib/db/providers/drizzle'
 import { users } from '../../../lib/db/schema'
 
-import { count, eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { AppError } from '../../../../server/handlers/AppError'
 import { hashProvider } from '../../../lib/db/providers/HashProvider/HashProvider'
 import { ensureAuthenticated } from '../../../../server/handlers/ensureAuthenticated'
+import { paginateColumn } from '@/lib/db/helpers/paginateColumn'
 
 export async function POST(request: Request) {
   const res = await request.json()
@@ -62,17 +63,20 @@ export async function GET(request: Request) {
     })
   }
 
-  const { searchParams } = new URL(request.url)
-
-  const page = Number(searchParams.get('page')) || 1
-  const limit = Number(searchParams.get('limit')) || 10
-
-  const total = await db.select({ value: count(users.id) }).from(users)
-  const hasNextPage = page * limit < total[0].value
-  const hasPreviousPage = page > 1
+  const { page, total, limit, hasNextPage, hasPreviousPage } =
+    await paginateColumn({
+      request,
+      table: users,
+    })
 
   const data = await db
-    .select()
+    .select({
+      id: users.id,
+      username: users.username,
+      email: users.email,
+      created_at: users.createdAt,
+      updated_at: users.updatedAt,
+    })
     .from(users)
     .orderBy(users.id)
     .limit(limit)
@@ -81,7 +85,7 @@ export async function GET(request: Request) {
   return Response.json({
     data,
     meta: {
-      total: total[0].value,
+      total,
       page,
       next_page: hasNextPage ? page + 1 : null,
       previous_page: hasPreviousPage ? page - 1 : null,
