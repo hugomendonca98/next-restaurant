@@ -29,14 +29,14 @@ export const DiskStorageProvider = {
 
       // Escreve o arquivo no disco
       await writeFile(
-        path.join(process.cwd(), 'public/temp/' + fileName),
+        path.join(process.cwd(), storageConfig.tempFolder + fileName),
         buffer,
       )
 
       // Move o arquivo para a pasta de upload
       await fs.promises.rename(
-        path.resolve(process.cwd(), 'public/temp/' + fileName),
-        path.resolve(process.cwd(), 'public/uploads/' + fileName),
+        path.resolve(process.cwd(), storageConfig.tempFolder + fileName),
+        path.resolve(process.cwd(), storageConfig.uploadsFolder + fileName),
       )
     } catch (error) {
       console.log('aqui', error)

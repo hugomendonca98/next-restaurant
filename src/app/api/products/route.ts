@@ -1,6 +1,6 @@
 import { AppError } from '../../../../server/handlers/AppError'
 import { ensureAuthenticated } from '../../../../server/handlers/ensureAuthenticated'
-import { StorageProvider } from '@/lib/db/providers/Storage/Storage'
+import { StorageProvider } from '@/lib/db/providers/StorageProvider/StorageProvider'
 
 export async function POST(request: Request) {
   const auth = await ensureAuthenticated(request)
