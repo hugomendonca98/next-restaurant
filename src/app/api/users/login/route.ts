@@ -12,9 +12,11 @@ import { eq } from 'drizzle-orm'
 export async function POST(request: Request) {
   const { email, password } = await request.json()
 
-  const user = await db.select().from(users).where(eq(users.email, email))
+  const user = await db.query.users.findFirst({
+    where: eq(users.email, email),
+  })
 
-  if (user.length < 1) {
+  if (!user) {
     return AppError({
       message: 'Usuário não encontrado.',
       status: 401,
@@ -23,7 +25,7 @@ export async function POST(request: Request) {
 
   const passwordMatched = await hashProvider.compareHash(
     password,
-    user[0].password,
+    user.password,
   )
 
   if (!passwordMatched) {
@@ -35,16 +37,16 @@ export async function POST(request: Request) {
 
   const { secret, expireIn } = authConfig.jwt
 
-  const token = sign({ id: user[0].id }, secret, { expiresIn: expireIn })
+  const token = sign({ id: user.id }, secret, { expiresIn: expireIn })
 
   // await db.insert(userToken).values({
   //   expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toDateString(),
   //   token,
-  //   userId: user[0].id,
+  //   userId: user.id,
   // })
 
   return NextResponse.json({
-    user: { email: user[0].email, id: user[0].id, username: user[0].username },
+    user: { email: user.email, id: user.id, username: user.username },
     token,
   })
 }

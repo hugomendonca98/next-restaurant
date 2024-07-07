@@ -8,28 +8,24 @@ import { ensureAuthenticated } from '../../../../server/handlers/ensureAuthentic
 import { paginateColumn } from '@/lib/db/helpers/paginateColumn'
 
 export async function POST(request: Request) {
-  const res = await request.json()
+  const { username, email, password } = await request.json()
 
-  const { username, email, password } = res
+  const userEmailExists = await db.query.users.findFirst({
+    where: eq(users.email, email),
+  })
 
-  const userEmailExists = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-
-  if (userEmailExists.length > 0) {
+  if (userEmailExists) {
     return AppError({
       message: 'Email addres already used.',
       status: 409,
     })
   }
 
-  const usernameExists = await db
-    .select()
-    .from(users)
-    .where(eq(users.username, username))
+  const usernameExists = await db.query.users.findFirst({
+    where: eq(users.username, username),
+  })
 
-  if (usernameExists.length > 0) {
+  if (usernameExists) {
     return AppError({
       message: 'Username already used.',
       status: 409,
