@@ -17,6 +17,8 @@ local.db
 
 # production
 /build
+/public/temp
+/public/uploads
 
 # misc
 .DS_Store
