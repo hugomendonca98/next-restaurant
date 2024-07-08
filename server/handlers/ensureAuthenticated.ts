@@ -4,9 +4,9 @@ import { verify } from 'jsonwebtoken'
 import authConfig from '../authConfig'
 
 interface ITokenPayload {
+  id: number
   iat: number
   exp: number
-  sub: string
 }
 
 export const ensureAuthenticated = async (request: Request) => {
@@ -25,11 +25,13 @@ export const ensureAuthenticated = async (request: Request) => {
   try {
     const decoded = verify(token, authConfig.jwt.secret)
 
-    const { sub } = decoded as ITokenPayload
+    const { id } = decoded as ITokenPayload
 
     request.user = {
-      id: sub,
+      id,
     }
+
+    console.log('decoded', decoded)
 
     return {
       success: true,

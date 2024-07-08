@@ -1,10 +1,8 @@
 {
-  "id": "0adc6d6d-0894-44ab-ba14-ea376536d382",
-  "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "user_token": {
+    "public.user_token": {
       "name": "user_token",
       "schema": "",
       "columns": {
@@ -52,36 +50,36 @@
         "user_token_user_id_users_id_fk": {
           "name": "user_token_user_id_users_id_fk",
           "tableFrom": "user_token",
-          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "user_token_id_unique": {
           "name": "user_token_id_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "id"
-          ]
+          ],
+          "nullsNotDistinct": false
         },
         "user_token_token_unique": {
           "name": "user_token_token_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "token"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "users": {
+    "public.users": {
       "name": "users",
       "schema": "",
       "columns": {
@@ -130,17 +128,17 @@
       "uniqueConstraints": {
         "users_id_unique": {
           "name": "users_id_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "id"
-          ]
+          ],
+          "nullsNotDistinct": false
         },
         "users_username_unique": {
           "name": "users_username_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "username"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     }
@@ -148,8 +146,10 @@
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "0adc6d6d-0894-44ab-ba14-ea376536d382",
+  "prevId": "00000000-0000-0000-0000-000000000000"
 }

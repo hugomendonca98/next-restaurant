@@ -38,6 +38,7 @@ export const userToken = pgTable('user_token', {
 
 export const userRelations = relations(users, ({ many }) => ({
   userToken: many(userToken),
+  products: many(products),
 }))
 
 export const userTokenRelations = relations(userToken, ({ one }) => ({
@@ -52,9 +53,8 @@ export const products = pgTable(
   {
     id: serial('id').unique().primaryKey(),
     name: text('name').notNull(),
-    description: text('description').notNull(),
+    description: text('description'),
     price: integer('price').notNull(),
-    image: text('image').notNull(),
     createdAt: text('created_at')
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -72,42 +72,32 @@ export const products = pgTable(
   }),
 )
 
-export const productRelations = relations(products, ({ one }) => ({
+export const productRelations = relations(products, ({ one, many }) => ({
   user: one(users, {
     fields: [products.userId],
     references: [users.id],
   }),
+  productImages: many(productImages),
 }))
 
-// export const tasks = sqliteTable(
-//   'tasks',
-//   {
-//     id: integer('id').primaryKey({ autoIncrement: true }),
-//     name: text('name').notNull(),
-//     start: integer('start', { mode: 'timestamp' }).notNull(),
-//     end: integer('end', { mode: 'timestamp' }).notNull(),
-//     userId: integer('user_id')
-//       .notNull()
-//       .references(() => users.id, { onDelete: 'cascade' }),
-//   },
-//   (table) => ({
-//     startIndex: index('start_index').on(table.start),
-//     endIndex: index('end_index').on(table.end),
-//     timeUniqueConstraint: unique('time_unique_constraint').on(
-//       table.start,
-//       table.end,
-//       table.userId,
-//     ),
-//   }),
-// )
+export const productImages = pgTable(
+  'product_images',
+  {
+    id: serial('id').unique().primaryKey(),
+    imageKey: text('image_key').notNull(),
+    productId: integer('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+  },
+  (table) => ({
+    productIdIdx: index('product_id_idx').on(table.productId),
+    imageKeyIdx: index('image_key_idx').on(table.imageKey),
+  }),
+)
 
-// export const userRelations = relations(users, ({ many }) => ({
-//   tasks: many(tasks),
-// }))
-
-// export const tasksRelations = relations(tasks, ({ one }) => ({
-//   user: one(users, {
-//     fields: [tasks.userId],
-//     references: [users.id],
-//   }),
-// }))
+export const productImagesRelations = relations(productImages, ({ one }) => ({
+  product: one(products, {
+    fields: [productImages.productId],
+    references: [products.id],
+  }),
+}))

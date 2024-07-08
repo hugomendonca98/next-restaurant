@@ -8,6 +8,27 @@
       "when": 1711583585625,
       "tag": "0000_smart_terrax",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1720330677600,
+      "tag": "0001_sour_nitro",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1720383125978,
+      "tag": "0002_fixed_zombie",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1720385350276,
+      "tag": "0003_violet_the_liberteens",
+      "breakpoints": true
     }
   ]
 }
